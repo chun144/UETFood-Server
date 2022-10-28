@@ -36,7 +36,7 @@ class UserRegisterView(APIView):
         else:
             return JsonResponse({
                 'error_message': 'This username has already exist!',
-                'errors_code': 409,
+                'error_code': 409,
             }, status=status.HTTP_409_CONFLICT)
 
 
@@ -69,7 +69,7 @@ class UserLoginView(APIView):
             }, status=status.HTTP_400_BAD_REQUEST)
 
         return Response({
-            'error_messages': serializer.errors,
+            'error_message': serializer.errors,
             'error_code': 400
         }, status=status.HTTP_400_BAD_REQUEST)
 
@@ -139,7 +139,7 @@ class ShoppingCartCreateAndDelete(APIView):
             except Exception:
                 return JsonResponse({
                     'message': 'Data already exists'
-                }, status=status.HTTP_400_BAD_REQUEST)
+                }, status=status.HTTP_409_CONFLICT)
 
             return Response(data=serializer.data, status=status.HTTP_200_OK)
 
@@ -221,6 +221,16 @@ class ListOrderView(ListCreateAPIView):
         return Order.objects.all()
 
 
+class OrderView(APIView):
+
+    def get(self, request, pk):
+        order = get_object_or_404(Order, pk=pk)
+
+        serializer = OrderSerializerGet(order)
+
+        return Response(data=serializer.data, status=status.HTTP_200_OK)
+
+
 class OrderShipperPostView(APIView):
 
     def post(self, request):
@@ -234,16 +244,16 @@ class OrderShipperPostView(APIView):
                 OrderShipper.objects.get(order=order)
                 return JsonResponse({
                     'message': 'The order has been received'
-                }, status=status.HTTP_400_BAD_REQUEST)
+                }, status=status.HTTP_406_NOT_ACCEPTABLE)
             except OrderShipper.DoesNotExist:
                 try:
                     OrderShipper.objects.create(order=order, shipper=shipper)
-                    order.status = 'shipping'
+                    order.status = 'Đang giao hàng'
                     order.save()
                 except Exception:
                     return JsonResponse({
                         'message': 'Data already exists'
-                    }, status=status.HTTP_400_BAD_REQUEST)
+                    }, status=status.HTTP_409_CONFLICT)
 
             return Response(data=serializer.data, status=status.HTTP_200_OK)
 
@@ -257,7 +267,15 @@ class OrderStatusView(APIView):
     def put(self, request, pk, s):
         s = s.strip()
         order = get_object_or_404(Order, pk=pk)
-        order.status = s
+        if s == 'shipped':
+            order.status = 'Đã giao hàng'
+        elif s == 'canceled':
+            order.status = 'Đã hủy đơn hàng'
+        else:
+            return JsonResponse({
+                'message': 'status false'
+            }, status=status.HTTP_400_BAD_REQUEST)
+
         order.save()
 
         serializer = OrderSerializerGet(order)
@@ -317,6 +335,16 @@ class ListQuestionView(ListCreateAPIView):
         return Question.objects.all()
 
 
+class QuestionView(APIView):
+
+    def get(self, request, pk):
+        question = get_object_or_404(Question, pk=pk)
+
+        serializer = QuestionSerializerGet(question)
+
+        return Response(data=serializer.data, status=status.HTTP_200_OK)
+
+
 class ListQuestionUserView(APIView):
 
     def get(self, request, s):
@@ -344,7 +372,7 @@ class AnswerPostView(APIView):
             except Exception:
                 return JsonResponse({
                     'message': 'Data already exists'
-                }, status=status.HTTP_400_BAD_REQUEST)
+                }, status=status.HTTP_409_CONFLICT)
 
             answerSerializer = AnswerSerializerGet(answer)
             return Response(data=answerSerializer.data, status=status.HTTP_200_OK)

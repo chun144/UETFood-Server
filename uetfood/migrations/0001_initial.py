@@ -71,7 +71,7 @@ class Migration(migrations.Migration):
                 ('note', models.CharField(default=None, max_length=255)),
                 ('totalPrice', models.IntegerField(default=0)),
                 ('date', models.DateField(default=None)),
-                ('status', models.CharField(default='ordered', max_length=50)),
+                ('status', models.CharField(default='Đã đặt hàng', max_length=50)),
             ],
         ),
         migrations.CreateModel(

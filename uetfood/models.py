@@ -40,7 +40,7 @@ class Order(models.Model):
     note = models.CharField(max_length=255, default=None)
     totalPrice = models.IntegerField(default=0)
     date = models.DateField(default=None)
-    status = models.CharField(max_length=50, default='ordered')
+    status = models.CharField(max_length=50, default='Đã đặt hàng')
     listOrderComposition = models.ManyToManyField(OrderComposition, through='OrderFood')
 
 
