@@ -48,7 +48,7 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('text', models.CharField(default='', max_length=2000)),
-                ('date', models.DateField(default=None)),
+                ('date', models.CharField(default=None, max_length=20)),
                 ('user', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
             ],
         ),
@@ -70,7 +70,7 @@ class Migration(migrations.Migration):
                 ('phone', models.CharField(default=None, max_length=20)),
                 ('note', models.CharField(default=None, max_length=255)),
                 ('totalPrice', models.IntegerField(default=0)),
-                ('date', models.DateField(default=None)),
+                ('date', models.CharField(default=None, max_length=20)),
                 ('status', models.CharField(default='Đã đặt hàng', max_length=50)),
             ],
         ),
@@ -87,7 +87,7 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('text', models.CharField(default='', max_length=2000)),
-                ('date', models.DateField(default=None)),
+                ('date', models.CharField(default=None, max_length=20)),
             ],
         ),
         migrations.CreateModel(
@@ -137,7 +137,7 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('text', models.CharField(default='', max_length=2000)),
-                ('date', models.DateField(default=None)),
+                ('date', models.CharField(default=None, max_length=20)),
                 ('rate', models.FloatField(default=0.0)),
                 ('user', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
             ],

@@ -39,7 +39,7 @@ class Order(models.Model):
     phone = models.CharField(max_length=20, default=None)
     note = models.CharField(max_length=255, default=None)
     totalPrice = models.IntegerField(default=0)
-    date = models.DateField(default=None)
+    date = models.CharField(max_length=20, default=None)
     status = models.CharField(max_length=50, default='Đã đặt hàng')
     listOrderComposition = models.ManyToManyField(OrderComposition, through='OrderFood')
 
@@ -71,13 +71,13 @@ class ShoppingCart(models.Model):
 class Answer(models.Model):
     text = models.CharField(max_length=2000, default="")
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    date = models.DateField(default=None)
+    date = models.CharField(max_length=20, default=None)
 
 
 class Question(models.Model):
     text = models.CharField(max_length=2000, default="")
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    date = models.DateField(default=None)
+    date = models.CharField(max_length=20, default=None)
     listAnswer = models.ManyToManyField(Answer, through='QuestionAnswer')
 
 
@@ -92,5 +92,5 @@ class QuestionAnswer(models.Model):
 class Comment(models.Model):
     text = models.CharField(max_length=2000, default="")
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    date = models.DateField(default=None)
+    date = models.CharField(max_length=20, default=None)
     rate = models.FloatField(default=0.0)

@@ -189,7 +189,7 @@ class OrderCreateView(APIView):
             phone = serializer.data['phone']
             user = get_object_or_404(User, username=serializer.data['username'])
             note = serializer.data['note']
-            date = datetime.date.today()
+            date = datetime.date.today().strftime("%d-%m-%Y")
             order = Order.objects.create(user=user, address=address, phone=phone, note=note, date=date)
 
             listOrderComposition = serializer.data['listOrderComposition'].split(",")
@@ -316,7 +316,7 @@ class QuestionPostView(APIView):
         if serializer.is_valid():
             user = get_object_or_404(User, username=serializer.data['username'])
             text = serializer.data['text']
-            date = datetime.date.today()
+            date = datetime.date.today().strftime("%d-%m-%Y")
             question = Question.objects.create(user=user, text=text, date=date)
 
             questionSerializer = QuestionSerializerGet(question)
@@ -365,7 +365,7 @@ class AnswerPostView(APIView):
             user = get_object_or_404(User, username=serializer.data['username'])
             question = get_object_or_404(Question, id=serializer.data['questionId'])
             text = serializer.data['text']
-            date = datetime.date.today()
+            date = datetime.date.today().strftime("%d-%m-%Y")
             answer = Answer.objects.create(user=user, text=text, date=date)
             try:
                 QuestionAnswer.objects.create(question=question, answer=answer)
@@ -391,7 +391,7 @@ class CommentPostView(APIView):
             user = get_object_or_404(User, username=serializer.data['username'])
             text = serializer.data['text']
             rate = serializer.data['rate']
-            date = datetime.date.today()
+            date = datetime.date.today().strftime("%d-%m-%Y")
             comment = Comment.objects.create(user=user, text=text, date=date, rate=rate)
 
             commentSerializer = CommentSerializerGet(comment)
